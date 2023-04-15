@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/photo-editor/static/css/main.6dea24e5.css",
-    "main.js": "/photo-editor/static/js/main.f7d69070.js",
+    "main.js": "/photo-editor/static/js/main.ae11e1f9.js",
     "static/js/496.0320d045.chunk.js": "/photo-editor/static/js/496.0320d045.chunk.js",
     "static/media/defaultBorder.png": "/photo-editor/static/media/defaultBorder.833c6b73f1a65754e25a.png",
     "index.html": "/photo-editor/index.html",
     "main.6dea24e5.css.map": "/photo-editor/static/css/main.6dea24e5.css.map",
-    "main.f7d69070.js.map": "/photo-editor/static/js/main.f7d69070.js.map",
+    "main.ae11e1f9.js.map": "/photo-editor/static/js/main.ae11e1f9.js.map",
     "496.0320d045.chunk.js.map": "/photo-editor/static/js/496.0320d045.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6dea24e5.css",
-    "static/js/main.f7d69070.js"
+    "static/js/main.ae11e1f9.js"
   ]
 }
