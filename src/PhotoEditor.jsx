@@ -21,6 +21,7 @@ const PhotoEditor = () => {
     const context = canvas.getContext("2d");
 
     const img = new Image();
+    img.crossOrigin = "anonymous"; // 設定跨域
     img.onload = () => {
       const canvasWidth = img.width;
       const canvasHeight = img.height;
@@ -30,25 +31,62 @@ const PhotoEditor = () => {
       context.drawImage(img, 0, 0, canvasWidth, canvasHeight);
       if (isBorderExist) {
         const border = new Image();
+        border.crossOrigin = "anonymous"; // 設定跨域
         border.onload = () => {
           context.drawImage(border, 0, 0, canvasWidth, canvasHeight);
           const downloadLink = document.createElement("a");
           downloadLink.setAttribute("download", "photo.png");
-          downloadLink.setAttribute(
-            "href",
-            canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
-          );
-          downloadLink.click();
+          if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+            // 如果是 iOS 系統，使用 toBlob 存入相簿
+            canvas.toBlob((blob) => {
+              const image = new Image();
+              image.src = URL.createObjectURL(blob);
+              const anchor = document.createElement("a");
+              anchor.href = image.src;
+              anchor.download = "photo.png";
+              anchor.style.display = "none";
+              document.body.appendChild(anchor);
+              anchor.click();
+              setTimeout(() => {
+                document.body.removeChild(anchor);
+                URL.revokeObjectURL(image.src);
+              }, 1000);
+            }, "image/png");
+          } else {
+            // 否則直接下載
+            downloadLink.setAttribute(
+              "href",
+              canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+            );
+            downloadLink.click();
+          }
         };
         border.src = defaultBorder;
       } else {
         const downloadLink = document.createElement("a");
         downloadLink.setAttribute("download", "photo.png");
-        downloadLink.setAttribute(
-          "href",
-          canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
-        );
-        downloadLink.click();
+        if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+          canvas.toBlob((blob) => {
+            const image = new Image();
+            image.src = URL.createObjectURL(blob);
+            const anchor = document.createElement("a");
+            anchor.href = image.src;
+            anchor.download = "photo.png";
+            anchor.style.display = "none";
+            document.body.appendChild(anchor);
+            anchor.click();
+            setTimeout(() => {
+              document.body.removeChild(anchor);
+              URL.revokeObjectURL(image.src);
+            }, 1000);
+          }, "image/png");
+        } else {
+          downloadLink.setAttribute(
+            "href",
+            canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+          );
+          downloadLink.click();
+        }
       }
     };
     img.src = uploadPhotoUrl;
