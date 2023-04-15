@@ -3,7 +3,7 @@ import defaultBorder from "./defaultBorder.png";
 
 const PhotoEditor = () => {
   const [uploadPhotoUrl, setUploadPhotoUrl] = useState();
-  const [isBorderExist, setIsBorderExit] = useState(false);
+  const [isBorderExist, setIsBorderExist] = useState(false);
   const canvasRef = useRef();
 
   const handleUploadPhoto = (e) => {
@@ -13,7 +13,7 @@ const PhotoEditor = () => {
   };
 
   const handleBorderDisplay = () => {
-    setIsBorderExit(!isBorderExist);
+    setIsBorderExist(!isBorderExist);
   };
 
   const handleDownload = () => {
@@ -37,20 +37,40 @@ const PhotoEditor = () => {
           const downloadLink = document.createElement("a");
           downloadLink.setAttribute("download", "photo.png");
           if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
-            // 如果是 iOS 系統，使用 toBlob 存入相簿
+            // 如果是 iOS 系統，調用相簿 API 進行存儲
             canvas.toBlob((blob) => {
-              const image = new Image();
-              image.src = URL.createObjectURL(blob);
+              const url = URL.createObjectURL(blob);
               const anchor = document.createElement("a");
-              anchor.href = image.src;
-              anchor.download = "photo.png";
+              anchor.href = url;
+              anchor.setAttribute("download", "photo.png");
               anchor.style.display = "none";
               document.body.appendChild(anchor);
               anchor.click();
-              setTimeout(() => {
-                document.body.removeChild(anchor);
-                URL.revokeObjectURL(image.src);
-              }, 1000);
+              document.body.removeChild(anchor);
+              URL.revokeObjectURL(url);
+              const reader = new FileReader();
+              reader.readAsDataURL(blob);
+              reader.onloadend = () => {
+                const base64data = reader.result;
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://api.imgur.com/3/image");
+                xhr.setRequestHeader("Authorization", "Client-ID xxxxxxxxxxxx"); // 設定你的 imgur client ID
+                xhr.onload = () => {
+                  const response = JSON.parse(xhr.responseText);
+                  if (response.success) {
+                    const imageUrl = response.data.link;
+                    window.location.href = imageUrl; // 跳轉到圖片頁面
+                  } else {
+                    alert("Upload failed.");
+                  }
+                };
+                xhr.onerror = () => {
+                  alert("Upload failed.");
+                };
+                const formData = new FormData();
+                formData.append("image", base64data);
+                xhr.send(formData);
+              };
             }, "image/png");
           } else {
             // 否則直接下載
