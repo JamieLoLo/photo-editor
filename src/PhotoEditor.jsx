@@ -69,7 +69,7 @@ const PhotoEditor = () => {
       </label>
       <input type="file" id="uploadPhoto" className="hidden" onChange={handleUploadPhoto} />
       <button className="bg-red-600 px-8 py-2 rounded mt-4 text-white" onClick={handleBorderDisplay}>
-        加上邊框
+        {isBorderExist ? "取消邊框" : "加上邊框"}
       </button>
       <button className="bg-blue-600 px-8 py-2 rounded mt-4 text-white" onClick={handleDownload}>
         下載照片
