@@ -8,7 +8,7 @@ const PhotoEditor = () => {
   const [uploadPhotoUrl, setUploadPhotoUrl] = useState()
   const [isBorderExist, setIsBorderExist] = useState(false)
   const canvasRef = useRef()
-  const testUrl = `https://www.facebook.com/sharer/sharer.php?u=https://images.pexels.com/photos/14744773/pexels-photo-14744773.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load`
+  const testUrl = `https://www.facebook.com/sharer/sharer.php?u=https://newpanosensingtoolbox.dynastymeow.repl.co/test.jpg`
   const handleUploadPhoto = (e) => {
     if (e.target.files[0]) {
       setUploadPhotoUrl(URL.createObjectURL(e.target.files[0]))
@@ -170,9 +170,10 @@ const PhotoEditor = () => {
       <a href='https://www.instagram.com' className=''>
         <FacebookIcon className='w-[50px] h-[50px] mt-4' />
       </a> */}
-      <a target='_blank' rel='noreferrer' href={testUrl}>
+      {/* <a target='_blank' rel='noreferrer' href={testUrl}>
         <div className='px-12 py-6 bg-slate-600 text-white'>測試</div>
-      </a>
+      </a> */}
+      <Facebook />
     </div>
   )
 }

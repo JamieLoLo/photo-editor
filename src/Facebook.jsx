@@ -5,13 +5,11 @@ const Facebook = () => {
   useEffect(() => {
     window.fbAsyncInit = function () {
       window.FB.init({
-        appId: '55613',
-        cookie: true,
+        appId: '556747509958413',
+        autoLogAppEvents: true,
         xfbml: true,
-        version: 'v12.0',
+        version: 'v13.0',
       })
-      window.FB.AppEvents.logPageView()
-      checkLoginStatus() // Check login status after SDK initialization
     }
 
     // ...
@@ -20,6 +18,23 @@ const Facebook = () => {
       window.FB.XFBML.parse()
     }
   }, [])
+
+  function shareToFacebook(imageUrl) {
+    window.FB.ui(
+      {
+        method: 'share',
+        href: imageUrl,
+      },
+      function (response) {
+        // 处理分享操作的回调
+        if (response && !response.error_message) {
+          console.log('分享成功！')
+        } else {
+          console.error('分享失败！')
+        }
+      }
+    )
+  }
   const checkLoginStatus = () => {
     window.FB.getLoginStatus(function (response) {
       if (response.status === 'connected') {
@@ -127,6 +142,11 @@ const Facebook = () => {
 
     return new Blob([arrayBuffer], { type: contentType })
   }
+  const handleShareClick = () => {
+    const imageUrl =
+      'https://images.pexels.com/photos/14744773/pexels-photo-14744773.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load'
+    shareToFacebook(imageUrl)
+  }
 
   return (
     <div>
@@ -136,11 +156,13 @@ const Facebook = () => {
           async
           defer
           crossorigin='anonymous'
-          src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0'
-          nonce='dmrjeGLN'
+          src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v13.0&appId=556747509958413&autoLogAppEvents=1'
+          nonce='YOUR_NONCE_VALUE'
         ></script>
       </Helmet>
-      <button onClick={handleUpload}>上傳照片</button>
+      <div>
+        <button onClick={handleShareClick}>分享到 Facebook</button>
+      </div>
     </div>
   )
 }
