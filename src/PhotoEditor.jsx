@@ -8,7 +8,7 @@ const PhotoEditor = () => {
   const [uploadPhotoUrl, setUploadPhotoUrl] = useState()
   const [isBorderExist, setIsBorderExist] = useState(false)
   const canvasRef = useRef()
-  const testUrl = `https://www.facebook.com/sharer/sharer.php?u=${uploadPhotoUrl}`
+  const testUrl = `https://www.facebook.com/sharer/sharer.php?u=https://images.pexels.com/photos/14744773/pexels-photo-14744773.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load`
   const handleUploadPhoto = (e) => {
     if (e.target.files[0]) {
       setUploadPhotoUrl(URL.createObjectURL(e.target.files[0]))
